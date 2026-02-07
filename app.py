@@ -41,6 +41,12 @@ st.markdown(
         margin: 24px auto;
         text-align: center;
     }
+    .content-card label,
+    .content-card p,
+    .content-card span {
+    color: #111111 !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
@@ -51,7 +57,6 @@ st.markdown(
 # -------------------------------------------------
 st.title("✨ AuraSense")
 st.caption("Aesthetic storytelling powered by AI & imagination")
-st.divider()
 
 # -------------------------------------------------
 # INPUT SECTION
@@ -108,7 +113,8 @@ if st.button("✨ Sense the Aura"):
         # Extract mood safely
         mood = "unknown"
         if "Mood:" in output:
-            mood = output.split("Mood:")[1].split("\n")[0].strip()
+            mood = output.split("Mood:")[1].split("\n")[0].strip().lower()
+
 
         # 🔥 FULL PAGE BACKGROUND CHANGE (SOFT & SAFE)
         set_background(mood)
