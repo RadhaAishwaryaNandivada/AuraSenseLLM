@@ -1,53 +1,43 @@
-import os
-import google.generativeai as genai
-from dotenv import load_dotenv
+from transformers import pipeline
 
-load_dotenv()
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# Text generation model (LLM)
+text_generator = pipeline(
+    "text-generation",
+    model="google/gemma-2b-it",
+    max_new_tokens=300
+)
 
-MODEL = genai.GenerativeModel("gemini-2.5-flash")
+# Image captioning model
+image_captioner = pipeline(
+    "image-to-text",
+    model="Salesforce/blip-image-captioning-base"
+)
 
 BASE_PROMPT = """
-You are an imaginative AI storyteller with strong aesthetic intelligence.
+You are a creative AI assistant.
 
-From the given input:
-
-1. Start with:
-   Mood: <one single word>
-   (If the vibe feels dreamy, vast, mysterious, or timeless, use cosmic or mystic.)
-
-2. Write a short engaging story (3–4 lines).
-   The story can be:
-   - romantic
-   - cinematic
-   - funny
-   - aesthetic
-   - cosmic / space-inspired
-
-3. Then present suggestions in clear bullet points:
-
-✨ Outfit Style  
-✨ Accessories / Jewellery  
-✨ Color Palette  
-✨ Flowers / Natural Elements  
-✨ Nature or Cosmic Scene  
-✨ Tourist or Stargazing Place  
-✨ Perfume / Fragrance Family  
-✨ Music Mood / Genre  
-
-4. Add a photography section:
-
-📸 Photography Style  
-📸 Pose Ideas (2–3 simple poses)  
-📸 Composition Tips (lighting, angle, framing)
-
-Rules:
-- Keep it beautiful, creative, and inspiring
-- Avoid technical jargon
-- Do NOT give advice, diagnosis, or predictions
+Tasks:
+1. First line must be: Mood: <one word>
+2. Write a short aesthetic story (3–4 lines)
+3. Give bullet-point suggestions:
+   - Outfit style
+   - Color palette
+   - Photography pose ideas
+   - Nature or cosmic theme
 """
 
-
 def analyze_aura(content):
-    response = MODEL.generate_content([BASE_PROMPT] + content)
-    return response.text
+    context = ""
+
+    for item in content:
+        # Image input
+        if hasattr(item, "size"):
+            caption = image_captioner(item)[0]["generated_text"]
+            context += f"Image description: {caption}. "
+        else:
+            context += str(item) + " "
+
+    prompt = BASE_PROMPT + "\nContext:\n" + context
+
+    result = text_generator(prompt)[0]["generated_text"]
+    return result
