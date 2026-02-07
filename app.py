@@ -12,42 +12,79 @@ st.set_page_config(
     layout="centered"
 )
 
-# ---------------- GLOBAL SAFE CSS ----------------
+# ---------------- FINAL SAFE CSS (DO NOT TOUCH AFTER THIS) ----------------
 st.markdown(
     """
     <style>
+    /* ===== GLOBAL BASE ===== */
     html, body, .stApp {
         background-color: #ffffff !important;
         color: #111111 !important;
     }
 
+    /* ===== CARDS ===== */
     .card {
-        background: rgba(255,255,255,0.96);
+        background: rgba(255,255,255,0.97);
         color: #111111;
-        padding: 24px;
+        padding: 26px;
         border-radius: 22px;
-        box-shadow: 0 16px 40px rgba(0,0,0,0.10);
-        margin-bottom: 24px;
+        box-shadow: 0 18px 42px rgba(0,0,0,0.12);
+        margin-bottom: 26px;
     }
 
     .output-card {
-        background: rgba(255,255,255,0.96);
+        background: rgba(255,255,255,0.97);
         color: #111111;
-        padding: 22px;
+        padding: 24px;
         border-radius: 20px;
-        box-shadow: 0 14px 36px rgba(0,0,0,0.10);
-        line-height: 1.6;
+        box-shadow: 0 16px 38px rgba(0,0,0,0.12);
+        line-height: 1.7;
     }
 
+    /* ===== TEXT INPUT FIXES ===== */
     textarea, input {
         background-color: #ffffff !important;
         color: #111111 !important;
         border-radius: 14px !important;
+        border: 1px solid #d0d0d0 !important;
     }
 
+    textarea::placeholder,
+    input::placeholder {
+        color: #777777 !important;
+        opacity: 1 !important;
+    }
+
+    textarea:focus,
+    input:focus {
+        outline: none !important;
+        border: 1px solid #7aa7ff !important;
+        box-shadow: 0 0 0 2px rgba(122,167,255,0.25) !important;
+    }
+
+    /* ===== FILE UPLOADER FIX ===== */
+    section[data-testid="stFileUploader"] {
+        background-color: #f7f7f7 !important;
+        border-radius: 16px;
+        padding: 12px;
+    }
+
+    /* ===== BUTTON FIX ===== */
+    button[kind="primary"] {
+        background-color: #111111 !important;
+        color: #ffffff !important;
+        border-radius: 16px !important;
+        padding: 10px 22px !important;
+    }
+
+    button[kind="primary"]:hover {
+        background-color: #000000 !important;
+    }
+
+    /* ===== IMAGE ===== */
     .image-wrapper {
         max-width: 520px;
-        margin: 24px auto;
+        margin: 28px auto;
         text-align: center;
     }
     </style>
@@ -70,7 +107,7 @@ with st.container():
     text_input = st.text_area(
         "💭 Describe the moment",
         placeholder="A calm night sky filled with stars above a silent road...",
-        height=110
+        height=120
     )
 
     uploaded_image = st.file_uploader(
