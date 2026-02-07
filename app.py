@@ -12,47 +12,43 @@ st.set_page_config(
     layout="centered"
 )
 
-# ---------------- GLOBAL SAFE STYLES ----------------
+# ---------------- GLOBAL SAFE CSS ----------------
 st.markdown(
     """
     <style>
-    /* Keep background aesthetic, but isolate content */
-    body {
-        background-color: transparent;
+    html, body, .stApp {
+        background-color: #ffffff !important;
+        color: #111111 !important;
     }
 
-    /* CARD BASE (this is the key fix) */
     .card {
-        background: #ffffff;
+        background: rgba(255,255,255,0.96);
         color: #111111;
         padding: 24px;
         border-radius: 22px;
-        box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.10);
         margin-bottom: 24px;
     }
 
-    /* Ensure inputs always readable */
+    .output-card {
+        background: rgba(255,255,255,0.96);
+        color: #111111;
+        padding: 22px;
+        border-radius: 20px;
+        box-shadow: 0 14px 36px rgba(0,0,0,0.10);
+        line-height: 1.6;
+    }
+
     textarea, input {
         background-color: #ffffff !important;
         color: #111111 !important;
         border-radius: 14px !important;
     }
 
-    /* Image alignment */
     .image-wrapper {
         max-width: 520px;
         margin: 24px auto;
         text-align: center;
-    }
-
-    /* Output card */
-    .output-card {
-        background: #ffffff;
-        color: #111111;
-        padding: 22px;
-        border-radius: 20px;
-        box-shadow: 0 14px 36px rgba(0,0,0,0.12);
-        line-height: 1.6;
     }
     </style>
     """,
@@ -65,7 +61,7 @@ st.caption("Aesthetic storytelling powered by AI & imagination")
 
 st.divider()
 
-# ---------------- INPUT SECTION (SOLID CARD) ----------------
+# ---------------- INPUT SECTION ----------------
 st.subheader("✨ Share a Moment")
 
 with st.container():
@@ -95,37 +91,29 @@ if st.button("✨ Sense the Aura"):
     else:
         content = []
 
-        # Image (clean, centered, fixed width)
         if uploaded_image:
             image = Image.open(uploaded_image)
-
             st.markdown('<div class="image-wrapper">', unsafe_allow_html=True)
             st.image(image, width=520)
             st.markdown('</div>', unsafe_allow_html=True)
-
             content.append(image)
 
-        # Text
         if text_input:
             content.append(text_input)
 
-        # Optional link
         if url_input:
             content.append(extract_text_from_url(url_input))
 
         with st.spinner("Sensing the aura..."):
             output = analyze_aura(content)
 
-        # Extract mood
         mood = "unknown"
         if "Mood:" in output:
             mood = output.split("Mood:")[1].split("\n")[0].strip()
 
-        # Apply transparent mood background (now SAFE)
         set_background(mood)
         emoji = get_mood_emoji(mood)
 
-        # Output inside solid card
         st.markdown(
             f"""
             <div class="output-card">

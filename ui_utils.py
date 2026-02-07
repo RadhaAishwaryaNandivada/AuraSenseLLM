@@ -15,23 +15,26 @@ def get_mood_emoji(mood):
     return MOOD_EMOJI.get(mood.lower(), "🌈")
 
 def set_background(mood):
-    cosmic_gradients = {
-        "cosmic": "linear-gradient(180deg, #0f2027, #203a43, #2c5364)",
-        "mystic": "linear-gradient(180deg, #1f1c2c, #928dab)",
-        "calm": "linear-gradient(180deg, #e3f2fd, #ffffff)",
-        "romantic": "linear-gradient(180deg, #fdeff9, #ec38bc)",
-        "energetic": "linear-gradient(180deg, #fffbd5, #f15f79)",
-        "nature": "linear-gradient(180deg, #d4fc79, #96e6a1)"
+    overlays = {
+        "calm": "rgba(227,242,253,0.45)",
+        "romantic": "rgba(252,228,236,0.45)",
+        "energetic": "rgba(255,248,225,0.45)",
+        "elegant": "rgba(236,239,241,0.45)",
+        "nature": "rgba(232,245,233,0.45)",
+        "fresh": "rgba(224,247,250,0.45)",
+        "cosmic": "rgba(44,83,100,0.35)",
+        "mystic": "rgba(146,141,171,0.35)"
     }
 
-    gradient = cosmic_gradients.get(mood.lower(), "linear-gradient(180deg,#ffffff,#f7f7f7)")
+    overlay = overlays.get(mood.lower(), "rgba(255,255,255,0.35)")
 
     st.markdown(
         f"""
         <style>
         .stApp {{
-            background: {gradient};
-            color: #111111;
+            background:
+                linear-gradient(180deg, #ffffff, #ffffff),
+                linear-gradient(180deg, {overlay}, rgba(255,255,255,0.95));
         }}
         </style>
         """,
