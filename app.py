@@ -3,7 +3,7 @@ from PIL import Image
 
 from gemini_utils import analyze_aura
 from input_utils import extract_text_from_url
-from ui_utils import get_mood_emoji
+from ui_utils import set_background, get_mood_emoji
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -12,27 +12,46 @@ st.set_page_config(
     layout="centered"
 )
 
+# ---------------- BASE STYLES (CLEAN & SAFE) ----------------
+st.markdown(
+    """
+    <style>
+    .content-card {
+        background: rgba(255,255,255,0.92);
+        padding: 26px;
+        border-radius: 22px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        margin-bottom: 24px;
+    }
+
+    .output-card {
+        background: rgba(255,255,255,0.92);
+        padding: 28px;
+        border-radius: 24px;
+        box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+        line-height: 1.7;
+    }
+
+    .image-wrapper {
+        max-width: 520px;
+        margin: 24px auto;
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # ---------------- HEADER ----------------
 st.title("✨ AuraSense")
 st.caption("Aesthetic storytelling powered by AI & imagination")
-
 st.divider()
 
 # ---------------- INPUT SECTION ----------------
 st.subheader("✨ Share a Moment")
 
 with st.container():
-    st.markdown(
-        """
-        <div style="
-            background: linear-gradient(180deg, #ffffff, #f7f9fc);
-            padding: 24px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        ">
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="content-card">', unsafe_allow_html=True)
 
     text_input = st.text_area(
         "Describe the moment",
@@ -45,9 +64,7 @@ with st.container():
         type=["jpg", "jpeg", "png"]
     )
 
-    url_input = st.text_input(
-        "Paste a link (optional)"
-    )
+    url_input = st.text_input("Paste a link (optional)")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -60,7 +77,9 @@ if st.button("✨ Sense the Aura"):
 
         if uploaded_image:
             image = Image.open(uploaded_image)
-            st.image(image, width=480)
+            st.markdown('<div class="image-wrapper">', unsafe_allow_html=True)
+            st.image(image, width=520)
+            st.markdown('</div>', unsafe_allow_html=True)
             content.append(image)
 
         if text_input:
@@ -72,34 +91,17 @@ if st.button("✨ Sense the Aura"):
         with st.spinner("Sensing the aura..."):
             output = analyze_aura(content)
 
-        # Extract mood
         mood = "unknown"
         if "Mood:" in output:
             mood = output.split("Mood:")[1].split("\n")[0].strip()
 
+        # 🔥 THIS IS WHERE FULL-PAGE BACKGROUND CHANGES
+        set_background(mood)
         emoji = get_mood_emoji(mood)
-
-        # Mood-based soft section (THIS is the fix)
-        mood_colors = {
-            "calm": "#e3f2fd",
-            "romantic": "#fde7f3",
-            "energetic": "#fff8e1",
-            "nature": "#e8f5e9",
-            "cosmic": "#ede7f6",
-            "mystic": "#f3e5f5"
-        }
-
-        bg = mood_colors.get(mood.lower(), "#f7f9fc")
 
         st.markdown(
             f"""
-            <div style="
-                background: {bg};
-                padding: 28px;
-                border-radius: 22px;
-                margin-top: 24px;
-                box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-            ">
+            <div class="output-card">
                 <h3>{emoji} Aura Story & Vibe Match</h3>
                 {output}
             </div>

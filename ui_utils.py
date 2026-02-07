@@ -4,37 +4,30 @@ MOOD_EMOJI = {
     "calm": "😌",
     "romantic": "💖",
     "energetic": "⚡",
-    "elegant": "✨",
     "nature": "🌿",
-    "fresh": "🍃",
     "cosmic": "🌌",
     "mystic": "🪐"
 }
 
-def get_mood_emoji(mood):
+MOOD_BACKGROUNDS = {
+    "calm": "linear-gradient(180deg, #e3f2fd, #ffffff)",
+    "romantic": "linear-gradient(180deg, #fde7f3, #ffffff)",
+    "energetic": "linear-gradient(180deg, #fff8e1, #ffffff)",
+    "nature": "linear-gradient(180deg, #e8f5e9, #ffffff)",
+    "cosmic": "linear-gradient(180deg, #ede7f6, #ffffff)",
+    "mystic": "linear-gradient(180deg, #f3e5f5, #ffffff)"
+}
+
+def get_mood_emoji(mood: str) -> str:
     return MOOD_EMOJI.get(mood.lower(), "🌈")
 
-def set_background(mood):
-    overlays = {
-        "calm": "rgba(227,242,253,0.45)",
-        "romantic": "rgba(252,228,236,0.45)",
-        "energetic": "rgba(255,248,225,0.45)",
-        "elegant": "rgba(236,239,241,0.45)",
-        "nature": "rgba(232,245,233,0.45)",
-        "fresh": "rgba(224,247,250,0.45)",
-        "cosmic": "rgba(44,83,100,0.35)",
-        "mystic": "rgba(146,141,171,0.35)"
-    }
-
-    overlay = overlays.get(mood.lower(), "rgba(255,255,255,0.35)")
-
+def set_background(mood: str):
+    bg = MOOD_BACKGROUNDS.get(mood.lower(), "linear-gradient(180deg, #f7f9fc, #ffffff)")
     st.markdown(
         f"""
         <style>
         .stApp {{
-            background:
-                linear-gradient(180deg, #ffffff, #ffffff),
-                linear-gradient(180deg, {overlay}, rgba(255,255,255,0.95));
+            background: {bg};
         }}
         </style>
         """,
