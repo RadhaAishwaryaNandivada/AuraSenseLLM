@@ -12,20 +12,23 @@ st.set_page_config(
     layout="centered"
 )
 
-# ---------------- FINAL SAFE CSS (DO NOT TOUCH AFTER THIS) ----------------
+# ---------------- ABSOLUTE FORCE CSS (FINAL FIX) ----------------
 st.markdown(
     """
     <style>
-    /* ===== GLOBAL BASE ===== */
-    html, body, .stApp {
+    /* ===== FORCE LIGHT MODE EVERYWHERE ===== */
+    html, body, .stApp, .main {
         background-color: #ffffff !important;
-        color: #111111 !important;
+        color: #000000 !important;
+    }
+
+    * {
+        color: #000000 !important;
     }
 
     /* ===== CARDS ===== */
     .card {
-        background: rgba(255,255,255,0.97);
-        color: #111111;
+        background: #ffffff !important;
         padding: 26px;
         border-radius: 22px;
         box-shadow: 0 18px 42px rgba(0,0,0,0.12);
@@ -33,52 +36,54 @@ st.markdown(
     }
 
     .output-card {
-        background: rgba(255,255,255,0.97);
-        color: #111111;
+        background: #ffffff !important;
         padding: 24px;
         border-radius: 20px;
         box-shadow: 0 16px 38px rgba(0,0,0,0.12);
         line-height: 1.7;
     }
 
-    /* ===== TEXT INPUT FIXES ===== */
-    textarea, input {
+    /* ===== TEXT INPUTS ===== */
+    textarea, input, label, p, span, h1, h2, h3, h4, h5 {
+        color: #000000 !important;
         background-color: #ffffff !important;
-        color: #111111 !important;
-        border-radius: 14px !important;
-        border: 1px solid #d0d0d0 !important;
     }
 
     textarea::placeholder,
     input::placeholder {
-        color: #777777 !important;
+        color: #555555 !important;
         opacity: 1 !important;
     }
 
     textarea:focus,
     input:focus {
         outline: none !important;
-        border: 1px solid #7aa7ff !important;
-        box-shadow: 0 0 0 2px rgba(122,167,255,0.25) !important;
+        border: 2px solid #000000 !important;
+        box-shadow: none !important;
     }
 
-    /* ===== FILE UPLOADER FIX ===== */
+    /* ===== FILE UPLOADER ===== */
     section[data-testid="stFileUploader"] {
-        background-color: #f7f7f7 !important;
+        background-color: #f5f5f5 !important;
         border-radius: 16px;
-        padding: 12px;
+        padding: 14px;
     }
 
-    /* ===== BUTTON FIX ===== */
-    button[kind="primary"] {
-        background-color: #111111 !important;
+    section[data-testid="stFileUploader"] * {
+        color: #000000 !important;
+    }
+
+    /* ===== BUTTON ===== */
+    button {
+        background-color: #000000 !important;
         color: #ffffff !important;
         border-radius: 16px !important;
-        padding: 10px 22px !important;
+        padding: 10px 24px !important;
+        border: none !important;
     }
 
-    button[kind="primary"]:hover {
-        background-color: #000000 !important;
+    button:hover {
+        background-color: #111111 !important;
     }
 
     /* ===== IMAGE ===== */
@@ -105,26 +110,26 @@ with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
 
     text_input = st.text_area(
-        "💭 Describe the moment",
+        "Describe the moment",
         placeholder="A calm night sky filled with stars above a silent road...",
         height=120
     )
 
     uploaded_image = st.file_uploader(
-        "📸 Add an image (optional)",
+        "Add an image (optional)",
         type=["jpg", "jpeg", "png"]
     )
 
     url_input = st.text_input(
-        "🔗 Paste a link (optional)"
+        "Paste a link (optional)"
     )
 
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------- PROCESS ----------------
-if st.button("✨ Sense the Aura"):
+if st.button("Sense the Aura"):
     if not any([text_input, uploaded_image]):
-        st.warning("Please enter text or upload an image (at least one).")
+        st.warning("Please enter text or upload an image.")
     else:
         content = []
 
